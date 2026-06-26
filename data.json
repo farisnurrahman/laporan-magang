@@ -1,0 +1,23 @@
+{
+  "fase1": {
+    "judul": "FASE 1: DRAF AWAL",
+    "berkas": [
+      { "nama": "Bab I - Pendahuluan", "path": "1_Draft_Awal/Bab1_Awal.pdf" },
+      { "nama": "Bab II - Tinjauan Pustaka", "path": "1_Draft_Awal/Bab2_Awal.pdf" }
+    ]
+  },
+  "fase2": {
+    "judul": "FASE 2: REVISI BERJALAN",
+    "berkas": [
+      { "nama": "Bab I (Terbaru)", "path": "2_Revisi_Pembimbing/Bab1_Revisi.pdf" },
+      { "nama": "Bab II (Terbaru)", "path": "2_Revisi_Pembimbing/Bab2_Revisi.pdf" },
+      { "requested": "Bab III (Metodologi)", "path": "2_Revisi_Pembimbing/Bab3_Revisi.pdf" }
+    ]
+  },
+  "fase3": {
+    "judul": "FASE 3: NASKAH FINAL",
+    "berkas": [
+      { "nama": "LIHAT DOKUMEN UTUH", "path": "3_Naskah_Final/Laporan_Magang_Faris.pdf" }
+    ]
+  }
+}
