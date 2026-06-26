@@ -21,58 +21,69 @@
             if (e.ctrlKey && e.keyCode === 83) return false;
         };
 
-        // === MEMUAT STRUKTUR BASIS DATA MANIFEST (0% HARDCODED) ===
-        async function muatStrukturLingkungan() {
+        // === KONFIGURASI DETEKSI OTOMATIS GLOBAL ===
+        const USERNAME = "farisnurrahman";
+        const REPOSITORI = "laporan-magang";
+        const DAFTAR_FOLDER = ["1_Draft_Awal", "2_Revisi_Pembimbing", "3_Naskah_Final"];
+
+        async function bangunLingkunganDinamis() {
             const sidebar = document.getElementById("js-sidebar-menu");
-            sidebar.innerHTML = "<p class='c-loader'>Sinkronisasi metadata lokal...</p>";
+            sidebar.innerHTML = "<p class='c-loader'>Memindai Lini Masa Dokumen...</p>";
 
             try {
-                // Membaca manifest data.json tanpa hambatan CORS/Rate Limit API
-                const respon = await fetch('data.json?v=' + new Date().getTime());
-                const strukturData = await respon.json();
-                
-                let htmlMenu = "";
+                let htmlNavigasi = "";
 
-                // PERBAIKAN: Menggunakan sintaks 'in' standar JavaScript
-                for (const kunci in strukturData) {
-                    const grup = strukturData[kunci];
-                    if (grup.berkas && grup.berkas.length > 0) {
-                        htmlMenu += `<div class="c-sidebar__section"><h3>${grup.judul}</h3>`;
+                for (const folder of DAFTAR_FOLDER) {
+                    // Membaca struktur berkas menggunakan endpoint CDN publik yang anti-blokir rate-limit
+                    const respon = await fetch(`https://github.com{USERNAME}/${REPOSITORI}/contents/${folder}?v=${new Date().getTime()}`);
+                    
+                    if (!respon.ok) continue;
+                    const daftarBerkas = await respon.json();
+
+                    // Otomatis menyaring HANYA berkas berformat PDF tanpa peduli apa pun namanya (Bebas NIM!)
+                    const berkasPdf = daftarBerkas.filter(file => file.name.toLowerCase().endsWith('.pdf'));
+
+                    if (berkasPdf.length > 0) {
+                        // Membuat judul bagian otomatis berdasarkan nama folder di GitHub
+                        const judulBagian = folder.replace(/^\d+_/,'').replace(/_/g, ' ').toUpperCase();
+                        htmlNavigasi += `<div class="c-sidebar__section"><h3>${judulBagian}</h3>`;
                         
-                        grup.berkas.forEach(item => {
-                            // Menggunakan ://githack.com agar PDF tampil bersih tanpa frame kode GitHub
-                            const urlClean = `https://://githack.com/farisnurrahman/laporan-magang/main/${item.path}`;
+                        berkasPdf.forEach(pdf => {
+                            // Bersihkan tampilan nama tombol (menghilangkan ekstensi .pdf agar visual di dosen rapi)
+                            const labelTombol = pdf.name.replace(/\.[^/.]+$/, "").replace(/_/g, " ");
+                            // Gunakan githack untuk render file PDF bersih terproteksi tanpa interface kode GitHub
+                            const urlRenderBersih = `https://githack.com{USERNAME}/${REPOSITORI}/main/${pdf.path}`;
                             
-                            htmlMenu += `
-                                <button class="c-sidebar__btn" onclick="tampilkanPdf('${urlClean}', this)">
-                                    ${item.nama}
+                            htmlNavigasi += `
+                                <button class="c-sidebar__btn" onclick="tampilkanDokumen('${urlRenderBersih}', this)">
+                                    ${labelTombol}
                                 </button>`;
                         });
                         
-                        htmlMenu += `</div>`;
+                        htmlNavigasi += `</div>`;
                     }
                 }
 
-                sidebar.innerHTML = htmlMenu;
-
-                // Otomatis aktifkan dokumen pertama di daftar menu jika ada
+                sidebar.innerHTML = htmlNavigasi || "<p class='c-loader'>Lingkungan Siap. Silakan unggah dokumen PDF ber-NIM Anda ke dalam folder bimbingan di GitHub.</p>";
+                
+                // Otomatis klik dokumen pertama yang berhasil ditemukan agar langsung tampil di dosen
                 const tombolPertama = sidebar.querySelector('.c-sidebar__btn');
                 if (tombolPertama) tombolPertama.click();
 
             } catch (error) {
-                sidebar.innerHTML = "<p class='c-loader--error'>Gagal memproses basis data lingkungan.</p>";
+                sidebar.innerHTML = "<p class='c-loader--error'>Gagal memproses data lingkungan secara dinamis.</p>";
             }
         }
 
-        function tampilkanPdf(url, elemenTombol) {
+        function tampilkanDokumen(url, elemenTombol) {
             document.querySelectorAll('.c-sidebar__btn').forEach(btn => btn.classList.remove('is-active'));
             elemenTombol.classList.add('is-active');
 
-            const viewer = document.getElementById("js-pdf-viewer");
-            viewer.src = url + "#toolbar=0&navpanes=0&scrollbar=0";
+            const penampil = document.getElementById("js-pdf-viewer");
+            penampil.src = url + "#toolbar=0&navpanes=0&scrollbar=0";
         }
 
-        window.addEventListener("DOMContentLoaded", muatStrukturLingkungan);
+        window.addEventListener("DOMContentLoaded", bangunLingkunganDinamis);
     </script>
 </head>
 <body>
@@ -83,19 +94,22 @@
         <p class="c-header__copyright">Copyright © 2026 • Faris Nurrahman</p>
     </div>
     <div class="c-header__status">
-        <span class="c-security-badge">Decoupled Manifest Protection</span>
+        <span class="c-security-badge">Dynamic API Protections</span>
     </div>
 </header>
 
 <div class="l-workspace">
+    <!-- Menu Samping Otomatis Terisi Berdasarkan File Aktual di GitHub -->
     <nav class="c-sidebar" id="js-sidebar-menu"></nav>
+    
+    <!-- Area Render Penampil PDF Utama -->
     <main class="l-document">
         <iframe id="js-pdf-viewer" class="c-pdf-viewer" src="about:blank"></iframe>
     </main>
 </div>
 
 <footer class="c-footer">
-    Protected under Indonesian Copyright Law No.28/2014 • Fixed Manifest Architecture
+    Protected under Indonesian Copyright Law No.28/2014 • Adaptive Environmental Architecture
 </footer>
 
 </body>
