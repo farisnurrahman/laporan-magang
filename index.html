@@ -5,52 +5,117 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="Faris Nurrahman">
     <meta name="description" content="Official Internship Report Preview Portal">
-    <!-- Strict Meta: Melarang Google mengarsipkan atau membuat cuplikan teks -->
     <meta name="robots" content="noarchive, nosnippet, noindex, nofollow">
     
     <title>Official Internship Report Preview Portal</title>
     <link rel="stylesheet" href="gaya.css">
 
     <script>
-        // Memblokir klik kanan secara total
-        document.addEventListener("contextmenu", e => e.preventDefault());
+        // === KONFIGURASI LINGKUNGAN OTOMATIS (0% HARDCODED BERKAS) ===
+        const GITHUB_USER = "farisnurrahman";
+        const GITHUB_REPO = "laporan-magang";
+        
+        // Folder yang menjadi target pemindaian otomatis oleh sistem
+        const TARGET_FOLDERS = ["1_Draft_Awal", "2_Revisi_Pembimbing", "3_Naskah_Final"];
 
+        // Keamanan Ketat Forensik Digital
+        document.addEventListener("contextmenu", e => e.preventDefault());
         document.onkeydown = function(e) {
-            // 1. Blokir F12 (Inspect Element)
             if (e.keyCode === 123) return false;
-            // 2. Blokir Ctrl + Shift + I, J, C
             if (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) return false;
-            // 3. Blokir Ctrl + U (View Source)
             if (e.ctrlKey && e.keyCode === 85) return false;
-            // 4. Blokir Ctrl + P (Print / Cetak sepihak)
             if (e.ctrlKey && e.keyCode === 80) return false;
-            // 5. PENYEMPURNAAN KETAT: Blokir Ctrl + S (Simpan dokumen ke lokal)
             if (e.ctrlKey && e.keyCode === 83) return false;
+        };
+
+        // Memuat navigasi secara dinamis berbasis struktur repositori aktual
+        async function inisialisasiLingkungan() {
+            const sidebar = document.getElementById("js-sidebar-menu");
+            sidebar.innerHTML = "<p class='c-loader'>Memindai metadata lingkungan...</p>";
+
+            try {
+                let htmlNavigasi = "";
+
+                for (const folder of TARGET_FOLDERS) {
+                    // Tembak API GitHub untuk membaca isi folder aktual
+                    const respon = await fetch(`https://github.com{GITHUB_USER}/${GITHUB_REPO}/contents/${folder}`);
+                    
+                    if (!respon.ok) continue;
+                    const berkasDitemukan = await respon.json();
+
+                    // Filter hanya berkas PDF yang akan dimasukkan ke menu navigasi web
+                    const daftarPdf = berkasDitemukan.filter(item => item.name.endsWith('.pdf'));
+
+                    if (daftarPdf.length > 0) {
+                        // Bersihkan nama folder untuk judul section (misal: 1_Draft_Awal -> DRAFT AWAL)
+                        const judulSection = folder.replace(/^\d+_/,'').replace(/_/g, ' ').toUpperCase();
+                        
+                        htmlNavigasi += `<div class="c-sidebar__section"><h3>${judulSection}</h3>`;
+                        
+                        daftarPdf.forEach(pdf => {
+                            // Bersihkan nama file sebagai label tombol agar rapi (hapus ekstensi .pdf)
+                            const namaLabel = pdf.name.replace('.pdf', '').replace(/_/g, ' ');
+                            // Gunakan ://githack.com untuk render PDF bersih bebas dari interface GitHub
+                            const urlBersih = `https://://githack.com/${GITHUB_USER}/${GITHUB_REPO}/main/${pdf.path}`;
+                            
+                            htmlNavigasi += `
+                                <button class="c-sidebar__btn" onclick="muatDokumen('${urlBersih}', this)">
+                                    ${namaLabel}
+                                </button>`;
+                        });
+                        
+                        htmlNavigasi += `</div>`;
+                    }
+                }
+
+                sidebar.innerHTML = htmlNavigasi || "<p class='c-loader'>Belum ada dokumen PDF di dalam folder bimbingan.</p>";
+                
+                // Otomatis klik tombol pertama jika ada dokumen tersedia
+                const tombolPertama = sidebar.querySelector('.c-sidebar__btn');
+                if (tombolPertama) tombolPertama.click();
+
+            } catch (error) {
+                sidebar.innerHTML = "<p class='c-loader--error'>Gagal memuat API Metadata Lingkungan.</p>";
+            }
         }
+
+        function muatDokumen(url, elemenTombol) {
+            // Ubah status aktif pada tombol menu samping
+            document.querySelectorAll('.c-sidebar__btn').forEach(btn => btn.classList.remove('is-active'));
+            elemenTombol.classList.add('is-active');
+
+            // Render PDF ke dalam iframe secara aman
+            const viewer = document.getElementById("js-pdf-viewer");
+            viewer.src = url + "#toolbar=0&navpanes=0&scrollbar=0";
+        }
+
+        window.addEventListener("DOMContentLoaded", inisialisasiLingkungan);
     </script>
 </head>
 <body>
 
 <header class="c-header">
     
-        <h1 class="c-header__title">OFFICIAL INTERNSHIP REPORT PREVIEW</h1>
+        <h1 class="c-header__title">OFFICIAL INTERNSHIP REPORT PORTAL</h1>
         <p class="c-header__copyright">Copyright © 2026 • Faris Nurrahman</p>
     </div>
     <div class="c-header__status">
-        <span class="c-security-badge">GitHub + Zenodo</span>
+        <span class="c-security-badge">Flexible API Protection</span>
     </div>
 </header>
 
-<main class="l-document">
-    <!-- Menembak ke file master dinamis di halaman depan agar dosen tidak meraba-raba folder -->
-    <iframe 
-        class="c-pdf-viewer" 
-        src="laporan_magang_preview.pdf#toolbar=0&navpanes=0&scrollbar=0">
-    </iframe>
-</main>
+<div class="l-workspace">
+    <!-- Sidebar Menu yang akan diisi secara otomatis oleh API JavaScript -->
+    <nav class="c-sidebar" id="js-sidebar-menu"></nav>
+
+    <!-- Area Penampil Utama -->
+    <main class="l-document">
+        <iframe id="js-pdf-viewer" class="c-pdf-viewer" src="about:blank"></iframe>
+    </main>
+</div>
 
 <footer class="c-footer">
-    Protected under Indonesian Copyright Law No.28/2014 • Verified Blockchain-like Timestamps
+    Protected under Indonesian Copyright Law No.28/2014 • Decoupled Architecture
 </footer>
 
 </body>
