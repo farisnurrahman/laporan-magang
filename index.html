@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="gaya.css">
 
     <script>
-        // Perlindungan Keamanan Forensik Ketat
+        // === PROTEKSI FORENSIK DIGITAL KETAT ===
         document.addEventListener("contextmenu", e => e.preventDefault());
         document.onkeydown = function(e) {
             if (e.keyCode === 123) return false;
@@ -21,7 +21,7 @@
             if (e.ctrlKey && e.keyCode === 83) return false;
         };
 
-        // Membaca Basis Data Lokal Secara Fleksibel & Aman
+        // === MEMUAT STRUKTUR BASIS DATA MANIFEST (0% HARDCODED) ===
         async function muatStrukturLingkungan() {
             const sidebar = document.getElementById("js-sidebar-menu");
             sidebar.innerHTML = "<p class='c-loader'>Sinkronisasi metadata lokal...</p>";
@@ -33,8 +33,8 @@
                 
                 let htmlMenu = "";
 
-                // Melakukan perulangan otomatis membentuk komponen navigasi
-                for (const kunci dalam strukturData) {
+                // PERBAIKAN: Menggunakan sintaks 'in' standar JavaScript
+                for (const kunci in strukturData) {
                     const grup = strukturData[kunci];
                     if (grup.berkas && grup.berkas.length > 0) {
                         htmlMenu += `<div class="c-sidebar__section"><h3>${grup.judul}</h3>`;
@@ -55,7 +55,7 @@
 
                 sidebar.innerHTML = htmlMenu;
 
-                // Otomatis aktifkan dokumen pertama di daftar menu
+                // Otomatis aktifkan dokumen pertama di daftar menu jika ada
                 const tombolPertama = sidebar.querySelector('.c-sidebar__btn');
                 if (tombolPertama) tombolPertama.click();
 
