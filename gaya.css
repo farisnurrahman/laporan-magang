@@ -1,165 +1,481 @@
 /* ==========================================================
-   RESET & SYSTEM BASIS
+   RESET
 ========================================================== */
-*, *::before, *::after {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
 
-:root {
-    --bg-primary: #1e1e24;
-    --bg-secondary: #0f1016;
-    --bg-panel: #2d2d30;
-    --bg-sidebar: #131419;
-    --bg-btn: #1c1d24;
-    --border: #30363d;
-    --accent: #00adb5;
-    --success: #08ff00;
-    --text: #ffffff;
-    --text-muted: #8d96a0;
-    --shadow: 0 10px 30px rgba(0,0,0,.35);
-}
-
-html, body {
-    height: 100%;
-    overflow: hidden;
-    font-family: "Segoe UI", sans-serif;
-    background: var(--bg-primary);
-    color: var(--text);
+*,
+*::before,
+*::after{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
 }
 
 /* ==========================================================
-   LAYOUT UTAMA WORKSPACE
+   ROOT
 ========================================================== */
-.c-header {
-    height: 88px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 30px;
-    background: var(--bg-secondary);
-    border-bottom: 3px solid var(--accent);
-    box-shadow: var(--shadow);
-}
 
-.c-header__title {
-    font-size: 17px;
-    color: var(--accent);
-    letter-spacing: 1.2px;
-    font-weight: 700;
-}
+:root{
 
-.c-header__copyright {
-    margin-top: 4px;
-    font-size: 12px;
-    color: #d8d8d8;
-}
+    --header-height:64px;
+    --toolbar-height:40px;
+    --footer-height:28px;
 
-.c-security-badge {
-    display: inline-flex;
-    align-items: center;
-    padding: 8px 14px;
-    border-radius: 6px;
-    border: 1px solid var(--success);
-    color: var(--success);
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    background: #252a34;
-}
+    --bg-primary:#1b1d22;
+    --bg-secondary:#0f1016;
+    --bg-surface:#20242b;
+    --bg-toolbar:#181b21;
 
-/* Pemisah Komponen Kerja */
-.l-workspace {
-    display: flex;
-    height: calc(100vh - 123px); /* 88px header + 35px footer */
-    width: 100%;
+    --border:#2f343d;
+
+    --accent:#00adb5;
+
+    --text:#f2f4f7;
+    --text-muted:#98a2ad;
+
+    --transition:.18s ease;
+
+    --font:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+
 }
 
 /* ==========================================================
-   KOMPONEN BILAH SAMPING (SIDEBAR DINAMIS)
+   BASE
 ========================================================== */
-.c-sidebar {
-    width: 290px;
-    background-color: var(--bg-sidebar);
-    border-right: 1px solid var(--border);
-    padding: 25px 20px;
-    overflow-y: auto;
+
+html{
+
+    height:100%;
+
+    color-scheme:dark;
+
 }
 
-.c-sidebar__section {
-    margin-bottom: 25px;
+body{
+
+    height:100%;
+
+    overflow:hidden;
+
+    background:var(--bg-primary);
+
+    color:var(--text);
+
+    font-family:var(--font);
+
 }
 
-.c-sidebar__section h3 {
-    font-size: 11px;
-    color: var(--accent);
-    letter-spacing: 1.5px;
-    margin-bottom: 12px;
-    font-weight: 700;
-    border-left: 2px solid var(--accent);
-    padding-left: 8px;
+button{
+
+    font:inherit;
+
+    border:none;
+
+    outline:none;
+
+    background:none;
+
+    cursor:pointer;
+
 }
 
-.c-sidebar__btn {
-    display: block;
-    width: 100%;
-    background: var(--bg-btn);
-    color: #eeeeee;
-    border: 1px solid var(--border);
-    padding: 12px 14px;
-    margin-bottom: 8px;
-    border-radius: 6px;
-    text-align: left;
-    font-size: 12px;
-    cursor: pointer;
-    transition: all 0.2s ease-in-out;
-}
+iframe{
 
-.c-sidebar__btn:hover {
-    background: #252833;
-    border-color: var(--text-muted);
-}
+    display:block;
 
-/* Status Tombol Aktif Diklik Dosen */
-.c-sidebar__btn.is-active {
-    background: var(--accent);
-    color: #0f1016;
-    font-weight: 700;
-    border-color: var(--accent);
-    box-shadow: 0 0 10px rgba(0, 173, 181, 0.3);
-}
-
-/* Loader Sistem */
-.c-loader {
-    font-size: 12px;
-    color: var(--text-muted);
-    text-align: center;
-    margin-top: 20px;
-    font-style: italic;
 }
 
 /* ==========================================================
-   KOMPONEN AREA DOKUMEN (PREVIEW)
+   APPLICATION
 ========================================================== */
-.l-document {
-    flex: 1;
-    background: var(--bg-panel);
+
+.l-app{
+
+    display:flex;
+
+    flex-direction:column;
+
+    height:100vh;
+
 }
 
-.c-pdf-viewer {
-    width: 100%;
-    height: 100%;
-    border: none;
+/* ==========================================================
+   HEADER
+========================================================== */
+
+.c-header{
+
+    height:var(--header-height);
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    padding:0 24px;
+
+    background:var(--bg-secondary);
+
+    border-bottom:1px solid var(--border);
+
+    flex-shrink:0;
+
 }
 
-.c-footer {
-    height: 35px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: var(--bg-secondary);
-    color: var(--text-muted);
-    border-top: 1px solid var(--border);
-    font-size: 11px;
+.c-header__title{
+
+    font-size:18px;
+
+    font-weight:700;
+
+    letter-spacing:.5px;
+
+    color:var(--accent);
+
+}
+
+.c-header__copyright{
+
+    margin-top:4px;
+
+    font-size:12px;
+
+    color:var(--text-muted);
+
+}
+
+.c-header__badge{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    padding:6px 12px;
+
+    border:1px solid var(--accent);
+
+    border-radius:4px;
+
+    color:var(--accent);
+
+    font-size:11px;
+
+    font-weight:600;
+
+    letter-spacing:.4px;
+
+}
+
+/* ==========================================================
+   TOOLBAR
+========================================================== */
+
+.c-toolbar{
+
+    height:var(--toolbar-height);
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    padding:0 18px;
+
+    background:var(--bg-toolbar);
+
+    border-bottom:1px solid var(--border);
+
+    flex-shrink:0;
+
+}
+
+.c-toolbar__group{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+}
+
+.c-toolbar__button{
+
+    color:var(--text);
+
+    padding:4px 10px;
+
+    border-radius:4px;
+
+    transition:var(--transition);
+
+}
+
+.c-toolbar__button:hover{
+
+    background:rgba(255,255,255,.05);
+
+}
+
+.c-toolbar__button:focus-visible{
+
+    outline:1px solid var(--accent);
+
+}
+
+.c-toolbar__status{
+
+    font-size:12px;
+
+    color:var(--text-muted);
+
+}
+
+/* ==========================================================
+   MAIN
+========================================================== */
+
+.l-main{
+
+    flex:1;
+
+    display:flex;
+
+    overflow:hidden;
+
+}
+
+/* ==========================================================
+   VIEWER
+========================================================== */
+
+.c-viewer{
+
+    position:relative;
+
+    flex:1;
+
+    overflow:hidden;
+
+    background:#2b2f37;
+
+}
+
+.c-pdf-viewer{
+
+    width:100%;
+
+    height:100%;
+
+    border:none;
+
+    background:#ffffff;
+
+}
+
+/* ==========================================================
+   LOADING
+========================================================== */
+
+.c-viewer__loading{
+
+    position:absolute;
+
+    inset:0;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    background:var(--bg-surface);
+
+    color:var(--text-muted);
+
+    font-size:14px;
+
+    z-index:20;
+
+}
+
+/* ==========================================================
+   ERROR
+========================================================== */
+
+.c-viewer__error{
+
+    position:absolute;
+
+    inset:0;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:10px;
+
+    background:var(--bg-surface);
+
+    z-index:25;
+
+    text-align:center;
+
+}
+
+.c-viewer__error h2{
+
+    font-size:20px;
+
+}
+
+.c-viewer__error p{
+
+    font-size:13px;
+
+    color:var(--text-muted);
+
+}
+
+/* ==========================================================
+   FOOTER
+========================================================== */
+
+.c-footer{
+
+    height:var(--footer-height);
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    background:var(--bg-secondary);
+
+    border-top:1px solid var(--border);
+
+    flex-shrink:0;
+
+}
+
+.c-footer__content{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    font-size:11px;
+
+    color:var(--text-muted);
+
+}
+
+.c-footer__separator{
+
+    opacity:.5;
+
+}
+
+/* ==========================================================
+   READING MODE
+========================================================== */
+
+body.reading-mode .c-header{
+
+    display:none;
+
+}
+
+body.reading-mode .c-toolbar{
+
+    display:none;
+
+}
+
+body.reading-mode .c-footer{
+
+    display:none;
+
+}
+
+/* ==========================================================
+   RESPONSIVE
+========================================================== */
+
+@media (max-width:768px){
+
+    .c-header{
+
+        padding:0 16px;
+
+    }
+
+    .c-header__title{
+
+        font-size:15px;
+
+    }
+
+    .c-header__copyright{
+
+        display:none;
+
+    }
+
+    .c-toolbar{
+
+        padding:0 12px;
+
+    }
+
+    .c-toolbar__button{
+
+        padding:4px 6px;
+
+        font-size:12px;
+
+    }
+
+    .c-footer{
+
+        display:none;
+
+    }
+
+}
+
+@media (max-width:480px){
+
+    .c-header{
+
+        justify-content:center;
+
+    }
+
+    .c-header__status{
+
+        display:none;
+
+    }
+
+    .c-toolbar{
+
+        justify-content:center;
+
+    }
+
+    .c-toolbar__status{
+
+        display:none;
+
+    }
+
 }
