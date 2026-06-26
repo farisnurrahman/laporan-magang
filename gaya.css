@@ -1,3 +1,6 @@
+/* ==========================================================
+   RESET & SYSTEM BASIS
+========================================================== */
 *, *::before, *::after {
     margin: 0;
     padding: 0;
@@ -8,6 +11,8 @@
     --bg-primary: #1e1e24;
     --bg-secondary: #0f1016;
     --bg-panel: #2d2d30;
+    --bg-sidebar: #131419;
+    --bg-btn: #1c1d24;
     --border: #30363d;
     --accent: #00adb5;
     --success: #08ff00;
@@ -24,6 +29,9 @@ html, body {
     color: var(--text);
 }
 
+/* ==========================================================
+   LAYOUT UTAMA WORKSPACE
+========================================================== */
 .c-header {
     height: 88px;
     display: flex;
@@ -61,8 +69,81 @@ html, body {
     background: #252a34;
 }
 
+/* Pemisah Komponen Kerja */
+.l-workspace {
+    display: flex;
+    height: calc(100vh - 123px); /* 88px header + 35px footer */
+    width: 100%;
+}
+
+/* ==========================================================
+   KOMPONEN BILAH SAMPING (SIDEBAR DINAMIS)
+========================================================== */
+.c-sidebar {
+    width: 290px;
+    background-color: var(--bg-sidebar);
+    border-right: 1px solid var(--border);
+    padding: 25px 20px;
+    overflow-y: auto;
+}
+
+.c-sidebar__section {
+    margin-bottom: 25px;
+}
+
+.c-sidebar__section h3 {
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 1.5px;
+    margin-bottom: 12px;
+    font-weight: 700;
+    border-left: 2px solid var(--accent);
+    padding-left: 8px;
+}
+
+.c-sidebar__btn {
+    display: block;
+    width: 100%;
+    background: var(--bg-btn);
+    color: #eeeeee;
+    border: 1px solid var(--border);
+    padding: 12px 14px;
+    margin-bottom: 8px;
+    border-radius: 6px;
+    text-align: left;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.c-sidebar__btn:hover {
+    background: #252833;
+    border-color: var(--text-muted);
+}
+
+/* Status Tombol Aktif Diklik Dosen */
+.c-sidebar__btn.is-active {
+    background: var(--accent);
+    color: #0f1016;
+    font-weight: 700;
+    border-color: var(--accent);
+    box-shadow: 0 0 10px rgba(0, 173, 181, 0.3);
+}
+
+/* Loader Sistem */
+.c-loader {
+    font-size: 12px;
+    color: var(--text-muted);
+    text-align: center;
+    margin-top: 20px;
+    font-style: italic;
+}
+
+/* ==========================================================
+   KOMPONEN AREA DOKUMEN (PREVIEW)
+========================================================== */
 .l-document {
-    height: calc(100vh - 123px);
+    flex: 1;
     background: var(--bg-panel);
 }
 
