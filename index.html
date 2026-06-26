@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Faris Nurrahman">
+    <meta name="description" content="Official Internship Report Preview Portal">
+    <!-- Strict Meta: Melarang Google mengarsipkan atau membuat cuplikan teks -->
+    <meta name="robots" content="noarchive, nosnippet, noindex, nofollow">
+    
+    <title>Official Internship Report Preview Portal</title>
+    <link rel="stylesheet" href="gaya.css">
+
+    <script>
+        // Memblokir klik kanan secara total
+        document.addEventListener("contextmenu", e => e.preventDefault());
+
+        document.onkeydown = function(e) {
+            // 1. Blokir F12 (Inspect Element)
+            if (e.keyCode === 123) return false;
+            // 2. Blokir Ctrl + Shift + I, J, C
+            if (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) return false;
+            // 3. Blokir Ctrl + U (View Source)
+            if (e.ctrlKey && e.keyCode === 85) return false;
+            // 4. Blokir Ctrl + P (Print / Cetak sepihak)
+            if (e.ctrlKey && e.keyCode === 80) return false;
+            // 5. PENYEMPURNAAN KETAT: Blokir Ctrl + S (Simpan dokumen ke lokal)
+            if (e.ctrlKey && e.keyCode === 83) return false;
+        }
+    </script>
+</head>
+<body>
+
+<header class="c-header">
+    
+        <h1 class="c-header__title">OFFICIAL INTERNSHIP REPORT PREVIEW</h1>
+        <p class="c-header__copyright">Copyright © 2026 • Faris Nurrahman</p>
+    </div>
+    <div class="c-header__status">
+        <span class="c-security-badge">GitHub + Zenodo</span>
+    </div>
+</header>
+
+<main class="l-document">
+    <!-- Menembak ke file master dinamis di halaman depan agar dosen tidak meraba-raba folder -->
+    <iframe 
+        class="c-pdf-viewer" 
+        src="laporan_magang_preview.pdf#toolbar=0&navpanes=0&scrollbar=0">
+    </iframe>
+</main>
+
+<footer class="c-footer">
+    Protected under Indonesian Copyright Law No.28/2014 • Verified Blockchain-like Timestamps
+</footer>
+
+</body>
+</html>
