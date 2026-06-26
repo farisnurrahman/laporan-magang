@@ -1,0 +1,11 @@
+# === MICROSOFT OFFICE TEMPORARY FILES ===
+~$*.docx
+~$*.doc
+~$*.xlsx
+~$*.pptx
+*.tmp
+
+# === SYSTEM OS CACHE ===
+.DS_Store
+Thumbs.db
+Desktop.ini
