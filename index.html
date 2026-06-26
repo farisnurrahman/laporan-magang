@@ -4,113 +4,201 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="Faris Nurrahman">
-    <meta name="description" content="Official Internship Report Preview Portal">
-    <meta name="robots" content="noarchive, nosnippet, noindex, nofollow">
-    
-    <title>Official Internship Report Preview Portal</title>
+    <meta name="description" content="Official Internship Report">
+    <meta name="robots" content="noarchive,nosnippet,noindex,nofollow">
+    <meta name="theme-color" content="#0f1016">
+    <meta name="color-scheme" content="dark">
+
+    <title>Official Internship Report</title>
+
     <link rel="stylesheet" href="gaya.css">
-
-    <script>
-        // === PROTEKSI FORENSIK DIGITAL KETAT ===
-        document.addEventListener("contextmenu", e => e.preventDefault());
-        document.onkeydown = function(e) {
-            if (e.keyCode === 123) return false;
-            if (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) return false;
-            if (e.ctrlKey && e.keyCode === 85) return false;
-            if (e.ctrlKey && e.keyCode === 80) return false;
-            if (e.ctrlKey && e.keyCode === 83) return false;
-        };
-
-        // === KONFIGURASI DETEKSI OTOMATIS GLOBAL ===
-        const USERNAME = "farisnurrahman";
-        const REPOSITORI = "laporan-magang";
-        const DAFTAR_FOLDER = ["1_Draft_Awal", "2_Revisi_Pembimbing", "3_Naskah_Final"];
-
-        async function bangunLingkunganDinamis() {
-            const sidebar = document.getElementById("js-sidebar-menu");
-            sidebar.innerHTML = "<p class='c-loader'>Memindai Lini Masa Dokumen...</p>";
-
-            try {
-                let htmlNavigasi = "";
-
-                for (const folder of DAFTAR_FOLDER) {
-                    // Membaca struktur berkas menggunakan endpoint CDN publik yang anti-blokir rate-limit
-                    const respon = await fetch(`https://github.com{USERNAME}/${REPOSITORI}/contents/${folder}?v=${new Date().getTime()}`);
-                    
-                    if (!respon.ok) continue;
-                    const daftarBerkas = await respon.json();
-
-                    // Otomatis menyaring HANYA berkas berformat PDF tanpa peduli apa pun namanya (Bebas NIM!)
-                    const berkasPdf = daftarBerkas.filter(file => file.name.toLowerCase().endsWith('.pdf'));
-
-                    if (berkasPdf.length > 0) {
-                        // Membuat judul bagian otomatis berdasarkan nama folder di GitHub
-                        const judulBagian = folder.replace(/^\d+_/,'').replace(/_/g, ' ').toUpperCase();
-                        htmlNavigasi += `<div class="c-sidebar__section"><h3>${judulBagian}</h3>`;
-                        
-                        berkasPdf.forEach(pdf => {
-                            // Bersihkan tampilan nama tombol (menghilangkan ekstensi .pdf agar visual di dosen rapi)
-                            const labelTombol = pdf.name.replace(/\.[^/.]+$/, "").replace(/_/g, " ");
-                            // Gunakan githack untuk render file PDF bersih terproteksi tanpa interface kode GitHub
-                            const urlRenderBersih = `https://githack.com{USERNAME}/${REPOSITORI}/main/${pdf.path}`;
-                            
-                            htmlNavigasi += `
-                                <button class="c-sidebar__btn" onclick="tampilkanDokumen('${urlRenderBersih}', this)">
-                                    ${labelTombol}
-                                </button>`;
-                        });
-                        
-                        htmlNavigasi += `</div>`;
-                    }
-                }
-
-                sidebar.innerHTML = htmlNavigasi || "<p class='c-loader'>Lingkungan Siap. Silakan unggah dokumen PDF ber-NIM Anda ke dalam folder bimbingan di GitHub.</p>";
-                
-                // Otomatis klik dokumen pertama yang berhasil ditemukan agar langsung tampil di dosen
-                const tombolPertama = sidebar.querySelector('.c-sidebar__btn');
-                if (tombolPertama) tombolPertama.click();
-
-            } catch (error) {
-                sidebar.innerHTML = "<p class='c-loader--error'>Gagal memproses data lingkungan secara dinamis.</p>";
-            }
-        }
-
-        function tampilkanDokumen(url, elemenTombol) {
-            document.querySelectorAll('.c-sidebar__btn').forEach(btn => btn.classList.remove('is-active'));
-            elemenTombol.classList.add('is-active');
-
-            const penampil = document.getElementById("js-pdf-viewer");
-            penampil.src = url + "#toolbar=0&navpanes=0&scrollbar=0";
-        }
-
-        window.addEventListener("DOMContentLoaded", bangunLingkunganDinamis);
-    </script>
 </head>
+
 <body>
 
-<header class="c-header">
-    
-        <h1 class="c-header__title">OFFICIAL INTERNSHIP REPORT PORTAL</h1>
-        <p class="c-header__copyright">Copyright © 2026 • Faris Nurrahman</p>
-    </div>
-    <div class="c-header__status">
-        <span class="c-security-badge">Dynamic API Protections</span>
-    </div>
-</header>
+    <!-- ==========================================================
+         APPLICATION
+    =========================================================== -->
 
-<div class="l-workspace">
-    <!-- Menu Samping Otomatis Terisi Berdasarkan File Aktual di GitHub -->
-    <nav class="c-sidebar" id="js-sidebar-menu"></nav>
-    
-    <!-- Area Render Penampil PDF Utama -->
-    <main class="l-document">
-        <iframe id="js-pdf-viewer" class="c-pdf-viewer" src="about:blank"></iframe>
-    </main>
-</div>
+    <div class="l-app">
 
-<footer class="c-footer">
-    Protected under Indonesian Copyright Law No.28/2014 • Adaptive Environmental Architecture
-</footer>
+        <!-- ======================================================
+             HEADER
+        ======================================================= -->
+
+        <header class="c-header">
+
+            <div class="c-header__identity">
+
+                <h1 class="c-header__title">
+                    OFFICIAL INTERNSHIP REPORT
+                </h1>
+
+                <p class="c-header__copyright">
+                    Copyright &copy; 2026 • Faris Nurrahman
+                </p>
+
+            </div>
+
+            <div class="c-header__status">
+
+                <span class="c-header__badge">
+                    GitHub • Zenodo
+                </span>
+
+            </div>
+
+        </header>
+
+        <!-- ======================================================
+             DOCUMENT TOOLBAR
+        ======================================================= -->
+
+        <nav
+            class="c-toolbar"
+            aria-label="Document Toolbar">
+
+            <div class="c-toolbar__group">
+
+                <button
+                    id="js-reading-toggle"
+                    class="c-toolbar__button"
+                    type="button">
+
+                    Reading Mode
+
+                </button>
+
+                <button
+                    id="js-fullscreen-toggle"
+                    class="c-toolbar__button"
+                    type="button">
+
+                    Fullscreen
+
+                </button>
+
+                <!-- <button
+                    id="js-fit-width"
+                    class="c-toolbar__button"
+                    type="button">
+
+                    Fit Width
+
+                </button> -->
+
+            </div>
+
+            <div class="c-toolbar__group">
+
+                <span
+                    id="js-document-status"
+                    class="c-toolbar__status">
+
+                    Official Preview
+
+                </span>
+
+            </div>
+
+        </nav>
+
+        <!-- ======================================================
+             MAIN
+        ======================================================= -->
+
+        <main
+            class="l-main"
+            id="js-main">
+
+            <section
+                class="c-viewer"
+                aria-label="Document Viewer">
+
+                <div
+                    id="js-loading"
+                    class="c-viewer__loading">
+
+                    Preparing document...
+
+                </div>
+
+                <div
+                    id="js-error"
+                    class="c-viewer__error"
+                    hidden>
+
+                    <h2>
+                        Document unavailable
+                    </h2>
+
+                    <p>
+                        Please verify the repository release or document location.
+                    </p>
+
+                </div>
+
+                <iframe
+
+                    id="js-pdf-viewer"
+
+                    class="c-pdf-viewer"
+
+                    title="Official Internship Report"
+
+                    loading="lazy"
+
+                    src="laporan_magang_preview.pdf#toolbar=0&navpanes=0&scrollbar=0">
+
+                </iframe>
+
+            </section>
+
+        </main>
+
+        <!-- ======================================================
+             FOOTER
+        ======================================================= -->
+
+        <footer class="c-footer">
+
+            <div class="c-footer__content">
+
+                <span>
+                    Protected under Indonesian Copyright Law No. 28 of 2014
+                </span>
+
+                <span class="c-footer__separator">
+                    •
+                </span>
+
+                <span>
+                    Version Controlled by Git
+                </span>
+
+                <span class="c-footer__separator">
+                    •
+                </span>
+
+                <span>
+                    Archived by Zenodo
+                </span>
+
+            </div>
+
+        </footer>
+
+    </div>
+
+    <!-- ==========================================================
+         JAVASCRIPT
+    =========================================================== -->
+
+    <script src="assets/js/viewer.js"></script>
+    <script src="assets/js/reading.js"></script>
+    <script src="assets/js/fullscreen.js"></script>
+    <script src="assets/js/security.js"></script>
+    <script src="assets/js/app.js"></script>
 
 </body>
 </html>
